@@ -16,7 +16,6 @@ RUN cd /usr/local/src/vircadia-web-sdk && \
     npm install && npm run build && npm pack
 
 FROM web-base
-RUN npm install -g @vue/cli@latest
 RUN npm install -g @quasar/cli
 ARG WEB_SDK_VER=vircadia-web-sdk-2022.1.1.tgz
 
@@ -32,7 +31,7 @@ RUN mkdir -p /usr/local/src && \
 
 COPY --from=web-sdk-builder /usr/local/src/vircadia-web-sdk/${WEB_SDK_VER} /usr/local/src/vircadia-web/
 RUN cd /usr/local/src/vircadia-web && \
-    tar zxvf ${WEB_SDK_VER} && cd package && npm link
+    tar zxvf ${WEB_SDK_VER} && npm install -g ./package
 RUN cd /usr/local/src/vircadia-web && \
     npm install && npm run build
 
