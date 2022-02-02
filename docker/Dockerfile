@@ -22,7 +22,7 @@ RUN mkdir -p /usr/local/src && \
 
 RUN mkdir -p /usr/local/src && \
     cd /usr/local/src && \
-    git clone --depth 1 --branch ${BRANCH} https://github.com/${REPO}/vircadia-web-sdk.git
+    git clone --depth 1 --branch master https://github.com/vircadia/vircadia-web-sdk.git
 
 RUN cd /usr/local/src/vircadia-web-sdk && \
     npm install && npm run build && npm pack && \
