@@ -18,9 +18,7 @@ RUN cd /usr/local/src/vircadia-web-sdk && \
 FROM web-base
 RUN npm install -g @quasar/cli
 
-# Need to make sure
-
-# ARG WEB_SDK_VER=vircadia-web-sdk-2022.1.1.tgz
+# Default is 2022.1.1. Make sure this version alligns with web-sdk version.
 ARG WEB_SDK_VER=2022.1.1
 
 # default is 'vircadia'

@@ -9,6 +9,6 @@ DVERSION=latest
 docker run -it \
     --name=vircadia-web \
     --restart=unless-stopped \
-    -p 8080:8080 \
+    -p 8090:8090 \
     --volume ${BASE}/log:/home/cadia/vircadia-web/log \
     vircadia-web:${DVERSION}

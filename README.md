@@ -58,3 +58,16 @@ npm run build
 ### Customize the configuration
 
 See [Configuring quasar.conf.js](https://v2.quasar.dev/quasar-cli/quasar-conf-js).
+
+## Docker
+
+Docker image can be created by the exection of the build script.
+In this process, vircadia web sdk (https://github.com/vircadia/vircadia-web-sdk) will be cloned and compiled. There is a byproduct "vircadia-web-sdk-[VERSION].tgz" where VERION is the web-sdk version. Consult the vircadia-web-sdk doc. Version default is 2022.1.1. Make sure that the right version is passed.
+The version argument is passed at the build-docker.sh "--build-arg WEB_SDK_VER".
+Port 8090 is open for this. Its log can be found at the local "log" directory.
+
+```
+cd docker && ./build-docker.sh
+```
+
+Docker image "vercadia-web" will be created and this image can be used as a part of docker-compose. Please consult vircadia-domain-server-docker (https://github.com/vircadia/vircadia-domain-server-docker).
