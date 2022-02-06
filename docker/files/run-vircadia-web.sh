@@ -11,6 +11,6 @@ fi
 mkdir -p "${LOGDIR}"
 
 LOGFILE=${LOGDIR}/$(date --utc "+%Y%m%d.%H%M").log
-
+echo "Log file: ${LOGFILE}"
 cd /usr/local/src/vircadia-web
-npm run serve >> ${LOGFILE} 2>&1
+sudo npm run dev >> ${LOGFILE} 2>&1

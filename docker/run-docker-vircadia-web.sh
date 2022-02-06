@@ -6,9 +6,8 @@ cd "${BASE}"
 
 DVERSION=latest
 
-docker run -it \
+docker run -d \
     --name=vircadia-web \
-    --restart=unless-stopped \
-    -p 8090:8090 \
+    -p 8080:8080 \
     --volume ${BASE}/log:/home/cadia/vircadia-web/log \
     vircadia-web:${DVERSION}

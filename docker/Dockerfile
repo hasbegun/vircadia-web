@@ -46,13 +46,13 @@ RUN adduser --disabled-password --gecos 'vircadia user' ${USER}
 
 ################################################################
 #### SECURITY: Enable this section for dev and debug ONLY. #####
-# RUN apt install sudo
-# RUN usermod -aG sudo ${USER} && \
-#     echo '%sudo ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers && \
-#     cp /root/.bashrc /home/${USER}/ && \
-#     chown -R --from=root ${USER}:${USER} /home/${USER} && \
-#     touch $HOME/.sudo_as_admin_successful
-# ENV PATH /home/developer/.local/bin:$PATH
+RUN apt update && apt install -y sudo vim
+RUN usermod -aG sudo ${USER} && \
+    echo '%sudo ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers && \
+    cp /root/.bashrc /home/${USER}/ && \
+    chown -R --from=root ${USER}:${USER} /home/${USER} && \
+    touch $HOME/.sudo_as_admin_successful
+ENV PATH /home/developer/.local/bin:$PATH
 ################################################################
 
 WORKDIR /home/${USER}
@@ -60,7 +60,7 @@ USER ${USER}:${USER}
 RUN mkdir -p /home/${USER}/${VIRCADIAWEB}/log
 COPY --chown=${USER}:${USER} ./files/run-vircadia-web.sh /home/${USER}/
 
-EXPOSE 8090
+EXPOSE 8080
 ENTRYPOINT [ "/home/cadia/run-vircadia-web.sh" ]
 
 #### debug only ####
