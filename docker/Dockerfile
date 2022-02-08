@@ -21,7 +21,6 @@ FROM web-base
 RUN npm install -g @vue/cli && npm install -g @quasar/cli
 
 # Default is 2022.1.2. Make sure this version alligns with web-sdk version.
-# vircadia-web-sdk-2022.1.2.tgz
 ARG WEB_SDK_VER=2022.1.2
 
 # default is 'vircadia'
@@ -34,20 +33,11 @@ RUN mkdir -p /usr/local/src && \
     cd /usr/local/src && \
     git clone --depth 1 --branch ${BRANCH} https://github.com/${REPO}/vircadia-web.git
 
-# COPY --from=web-sdk-builder /usr/local/src/vircadia-web-sdk/vircadia-web-sdk-${WEB_SDK_VER}.tgz /usr/local/src/
-# RUN cd /usr/local/src && \
-#     tar zxvf vircadia-web-sdk-${WEB_SDK_VER}.tgz && npm install -g ./package
-
-COPY --from=web-sdk-builder /usr/local/src/vircadia-web-sdk/vircadia-web-sdk-2022.1.2.tgz /usr/local/src/
+COPY --from=web-sdk-builder /usr/local/src/vircadia-web-sdk/vircadia-web-sdk-${WEB_SDK_VER}.tgz /usr/local/src/
 RUN cd /usr/local/src && \
-    tar zxvf vircadia-web-sdk-2022.1.2.tgz && npm install -g ./package
-
-# RUN cd /usr/local/src/vircadia-web && npm i && \
-#     cp -r /usr/local/src/package/dist/* node_modules/@vircadia/web-sdk/dist/ && \
-#     npm run build
+    tar zxvf vircadia-web-sdk-${WEB_SDK_VER}.tgz && npm install -g ./package
 
 RUN cd /usr/local/src/vircadia-web && npm i && npm run build
-
 
 ENV USER=cadia
 ENV VIRCADIAWEB=vircadia-web
@@ -55,8 +45,6 @@ ENV VIRCADIAWEB=vircadia-web
 # Add a user for the server to run under
 RUN adduser --disabled-password --gecos 'vircadia user' ${USER}
 
-################################################################
-#### SECURITY: Enable this section for dev and debug ONLY. #####
 RUN apt update && apt install -y sudo vim
 RUN usermod -aG sudo ${USER} && \
     echo '%sudo ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers && \
@@ -64,7 +52,6 @@ RUN usermod -aG sudo ${USER} && \
     chown -R --from=root ${USER}:${USER} /home/${USER} && \
     touch $HOME/.sudo_as_admin_successful
 ENV PATH /home/developer/.local/bin:$PATH
-################################################################
 
 WORKDIR /home/${USER}
 USER ${USER}:${USER}
@@ -72,7 +59,4 @@ RUN mkdir -p /home/${USER}/${VIRCADIAWEB}/log
 COPY --chown=${USER}:${USER} ./files/run-vircadia-web.sh /home/${USER}/
 
 EXPOSE 8080
-# ENTRYPOINT [ "/home/cadia/run-vircadia-web.sh" ]
-
-#### debug only ####
-CMD ["/bin/bash"]
+ENTRYPOINT [ "/home/cadia/run-vircadia-web.sh" ]
