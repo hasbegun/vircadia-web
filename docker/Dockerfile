@@ -1,12 +1,13 @@
 FROM ubuntu:20.04 as web-base
 
 RUN apt update && apt install -y git curl
-RUN curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh && \
+RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh && \
     bash ./nodesource_setup.sh && \
     apt install nodejs && \
     rm ./nodesource_setup.sh
 
 FROM web-base as web-sdk-builder
+RUN apt update
 # checkout repo
 RUN mkdir -p /usr/local/src && \
     cd /usr/local/src && \
@@ -16,10 +17,12 @@ RUN cd /usr/local/src/vircadia-web-sdk && \
     npm install && npm run build && npm pack
 
 FROM web-base
-RUN npm install -g @quasar/cli
+# RUN apt update
+RUN npm install -g @vue/cli && npm install -g @quasar/cli
 
-# Default is 2022.1.1. Make sure this version alligns with web-sdk version.
-ARG WEB_SDK_VER=2022.1.1
+# Default is 2022.1.2. Make sure this version alligns with web-sdk version.
+# vircadia-web-sdk-2022.1.2.tgz
+ARG WEB_SDK_VER=2022.1.2
 
 # default is 'vircadia'
 ARG REPO=hasbegun
@@ -31,12 +34,20 @@ RUN mkdir -p /usr/local/src && \
     cd /usr/local/src && \
     git clone --depth 1 --branch ${BRANCH} https://github.com/${REPO}/vircadia-web.git
 
-COPY --from=web-sdk-builder /usr/local/src/vircadia-web-sdk/vircadia-web-sdk-${WEB_SDK_VER}.tgz /usr/local/src/
+# COPY --from=web-sdk-builder /usr/local/src/vircadia-web-sdk/vircadia-web-sdk-${WEB_SDK_VER}.tgz /usr/local/src/
+# RUN cd /usr/local/src && \
+#     tar zxvf vircadia-web-sdk-${WEB_SDK_VER}.tgz && npm install -g ./package
+
+COPY --from=web-sdk-builder /usr/local/src/vircadia-web-sdk/vircadia-web-sdk-2022.1.2.tgz /usr/local/src/
 RUN cd /usr/local/src && \
-    tar zxvf vircadia-web-sdk-${WEB_SDK_VER}.tgz && npm install -g ./package
-RUN cd /usr/local/src/vircadia-web && npm i && \
-    cp -r /usr/local/src/package/dist/* node_modules/@vircadia/web-sdk/dist/ && \
-    npm run build
+    tar zxvf vircadia-web-sdk-2022.1.2.tgz && npm install -g ./package
+
+# RUN cd /usr/local/src/vircadia-web && npm i && \
+#     cp -r /usr/local/src/package/dist/* node_modules/@vircadia/web-sdk/dist/ && \
+#     npm run build
+
+RUN cd /usr/local/src/vircadia-web && npm i && npm run build
+
 
 ENV USER=cadia
 ENV VIRCADIAWEB=vircadia-web
@@ -61,7 +72,7 @@ RUN mkdir -p /home/${USER}/${VIRCADIAWEB}/log
 COPY --chown=${USER}:${USER} ./files/run-vircadia-web.sh /home/${USER}/
 
 EXPOSE 8080
-ENTRYPOINT [ "/home/cadia/run-vircadia-web.sh" ]
+# ENTRYPOINT [ "/home/cadia/run-vircadia-web.sh" ]
 
 #### debug only ####
-# CMD ["/bin/bash"]
+CMD ["/bin/bash"]
