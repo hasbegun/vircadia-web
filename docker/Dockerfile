@@ -23,12 +23,12 @@ RUN npm install -g @vue/cli && npm install -g @quasar/cli
 # Default is 2022.1.2. Make sure this version alligns with web-sdk version.
 ARG WEB_SDK_VER=2022.1.2
 
-# default is 'vircadia'
-ARG REPO=hasbegun
-# default is 'master'
-ARG BRANCH=docker
+# Default is 'vircadia'
+ARG REPO=vircadia
+# Default is 'master'
+ARG BRANCH=master
 
-# checkout repo
+# Checkout repo
 RUN mkdir -p /usr/local/src && \
     cd /usr/local/src && \
     git clone --depth 1 --branch ${BRANCH} https://github.com/${REPO}/vircadia-web.git
