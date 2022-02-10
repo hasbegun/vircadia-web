@@ -38,7 +38,7 @@ export const DefaultConfig: { [key: string]: string } = {
 
     // docker compose metaverse w/o ssl.
     "Default_Metaverse_Url": "http://localhost:9400",
-    "Default_Domain_Protocol": "ws:",
+    "Default_Domain_Protocol": "wss:",
     "Default_Domain_Port": "40102"
     ////
 };
