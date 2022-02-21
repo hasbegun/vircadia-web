@@ -126,7 +126,10 @@ module.exports = configure(function (ctx) {
 
         // Full list of options: https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
         devServer: {
-            https: false,
+            // https: false,
+            public: 'web.innoxai.com',
+            host : '0.0.0.0',
+            disableHostCheck: true,
             port: 8080,
             open: true // opens browser window automatically
         },

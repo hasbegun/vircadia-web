@@ -29,6 +29,9 @@ ARG REPO=vircadia
 ARG BRANCH=master
 ARG COMMIT=""
 
+LABEL commit=${COMMIT}
+LABEL branch=${BRANCH}
+
 # checkout repo
 RUN mkdir -p /usr/local/src && \
     cd /usr/local/src && \
@@ -42,6 +45,9 @@ RUN cd /usr/local/src/vircadia-web && npm i && npm run build
 
 ENV USER=cadia
 ENV VIRCADIAWEB=vircadia-web
+
+ENV COMMIT_SHA=${COMMIT}
+ENV COMMIT_BRANCH=${BRANCH}
 
 # Add a user for the server to run under
 RUN adduser --disabled-password --gecos 'vircadia user' ${USER}
