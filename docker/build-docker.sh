@@ -8,4 +8,13 @@ else
 fi
 echo "Vircadia Web SDK version ${WEB_SDK_VER} is used."
 
-docker build -t vircadia-web --build-arg WEB_SDK_VER=${WEB_SDK_VER} .
+REPO=hasbegun
+BRANCH=dev_ssl
+COMMIT=$(git rev-parse --short HEAD)
+
+docker build -t vircadia-web \
+  --build-arg WEB_SDK_VER=${WEB_SDK_VER} \
+  --build-arg=REPO=$REPO \
+  --build-arg=BRANCH=$BRANCH \
+  --build-arg=COMMIT=$COMMIT \
+  -f Dockerfile .

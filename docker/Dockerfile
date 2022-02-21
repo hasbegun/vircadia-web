@@ -27,6 +27,7 @@ ARG WEB_SDK_VER=2022.1.2
 ARG REPO=vircadia
 # default is 'master'
 ARG BRANCH=master
+ARG COMMIT=""
 
 # checkout repo
 RUN mkdir -p /usr/local/src && \
